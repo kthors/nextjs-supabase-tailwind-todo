@@ -17,7 +17,14 @@ const AddTodoForm: FC<Props> = ({ addTodo, closeAddTodo }) => {
     if (!task) {
       setAlertMessage("You need to add some text!");
       setShowAlert(true);
+      return;
     }
+    if (task.length > 20) {
+      setAlertMessage("Your todo is too long!");
+      setShowAlert(true);
+      return;
+    }
+    
     addTodo(task);
     setTask("");
   };
