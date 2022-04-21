@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
 import EditTodoForm from "./EditTodoForm";
 
 interface Props {
@@ -14,24 +13,7 @@ const Todo: FC<Props> = ({ todo, onDelete, handleOnEdit }) => {
 
   const toggle = async () => {
     try {
-      const { data, error } = await supabase
-        .from("todos")
-        .update({ is_complete: !isCompleted })
-        .eq("id", todo.id)
-        .single();
 
-      // let newList = JSON.parse(localStorage.getItem("todos")).map(
-      //   (storedTodo) => {
-      //     if (storedTodo.id == todo.id) return Object.assign({}, data);
-      //     return storedTodo;
-      //   }
-      // );
-      // localStorage.setItem("todos", JSON.stringify(newList));
-
-      if (error) {
-        throw new Error(error);
-      }
-      setIsCompleted(data.is_complete);
     } catch (error) {
       console.error(error);
     }

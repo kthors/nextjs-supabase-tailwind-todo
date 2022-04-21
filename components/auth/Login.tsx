@@ -1,5 +1,4 @@
 import { useState, useEffect, FC } from "react";
-import { supabase } from "../../lib/supabaseClient";
 import Alert from "../shared/Alert";
 import Link from "next/link";
 
@@ -17,8 +16,7 @@ const Login: FC<Props> = ({ handleAuthChange }) => {
   const handleEmailLogin = async (email: string, password: string) => {
     try {
       setLoading(true);
-      const { user, error } = await supabase.auth.signIn({ email, password });
-      if (error) throw error;
+      
     } catch (error) {
       setLoading(false);
       setAlertMessage(error.error_description || error.message);
@@ -28,9 +26,7 @@ const Login: FC<Props> = ({ handleAuthChange }) => {
   };
 
   const handleGithubLogin = async () => {
-    const { user, session, error } = await supabase.auth.signIn({
-      provider: "github",
-    });
+
   };
 
   useEffect(() => {

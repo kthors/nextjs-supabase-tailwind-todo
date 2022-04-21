@@ -1,5 +1,4 @@
 import { FC, useEffect, useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
 
 interface Props {
   todo: any;

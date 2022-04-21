@@ -2,22 +2,16 @@ import React, { FC, useEffect, useState } from "react";
 import TodoList from "../components/todos/TodoList";
 import Auth from "../components/auth/Auth";
 import { useTheme } from "next-themes";
-import { supabase } from "../lib/supabaseClient";
 
 const Todos: FC = () => {
   const [session, setSession] = useState(null);
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
-    setSession(supabase.auth.session());
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
+    // setSession(supabase.auth.session());
   }, []);
 
   const handleSignOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) return console.error(error.message);
   };
 
   return (
@@ -72,7 +66,7 @@ const Todos: FC = () => {
             <h1 className="font-bold text-3xl">Nextjs Todolist</h1>
           </header>
 
-          <TodoList user={supabase.auth.user()} />
+          <TodoList user={() => null} />
 
           <button
             onClick={() => {

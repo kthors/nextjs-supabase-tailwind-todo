@@ -1,5 +1,4 @@
 import { FC, useEffect, useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
 import AddTodoForm from "./AddTodoForm";
 import Alert from "./Alert";
 import Todo from "./Todo";
@@ -21,12 +20,6 @@ const Todolist: FC<Props> = ({ user }) => {
 
   const fetchTodos = async () => {
     try {
-      let { data: todos, error } = await supabase
-        .from("todos")
-        .select("*")
-        .eq("user_id", user.id)
-        .order("id", true);
-      if (error) throw new Error(errorText);
       setTodos(todos);
     } catch (error) {
       console.error(error);
@@ -36,19 +29,12 @@ const Todolist: FC<Props> = ({ user }) => {
   const editTodo = async (todoId: string | number, task: string) => {
     try {
       let trimmedTask = task.trim();
-      const { data, error } = await supabase
-        .from("todos")
-        .update({ task: trimmedTask })
-        .eq("id", todoId)
-        .single();
 
       let newList = todos.map((storedTodo: ITodo) => {
         if (storedTodo.id == todoId) return Object.assign({}, data);
         return storedTodo;
       });
-      if (error) {
-        throw new Error(error);
-      }
+
       setTodos(newList);
     } catch (error) {
       console.error(error);
@@ -58,20 +44,12 @@ const Todolist: FC<Props> = ({ user }) => {
   const addTodo = async (task: string) => {
     let trimmedTask = task.trim();
     if (trimmedTask.length) {
-      let { data: todo, error } = await supabase
-        .from("todos")
-        .insert({ task: trimmedTask, user_id: user.id })
-        .single();
-      if (error) setError(error.message);
-      else {
-        setTodos([...todos, todo]);
-      }
+
     }
   };
 
   const deleteTodo = async (id: number) => {
     try {
-      await supabase.from("todos").delete().eq("id", id);
       const filteredTodos = todos.filter((todo) => todo.id != id);
       setTodos(filteredTodos);
     } catch (error) {

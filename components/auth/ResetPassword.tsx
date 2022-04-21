@@ -17,9 +17,6 @@ const ResetPassword: FC<Props> = ({
 
   const handlePasswordReset = async (emailParam: string) => {
     try {
-      const { data, error } = await supabase.auth.api.resetPasswordForEmail(
-        emailParam
-      );
       handleLoading(true);
     } catch (error) {
       console.error(error);
