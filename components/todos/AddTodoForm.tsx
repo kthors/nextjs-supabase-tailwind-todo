@@ -1,43 +1,43 @@
-import { FC, useState, useEffect } from "react";
-import { FAddTodo } from "../../types";
-import Alert from "../shared/Alert";
+import { FC, useState, useEffect } from "react"
+import { FAddTodo } from "../../types"
+import Alert from "../shared/Alert"
 
 interface Props {
-  addTodo: (todo: FAddTodo) => void;
-  closeAddTodo: () => void;
+  addTodo: (todo: FAddTodo) => void
+  closeAddTodo: () => void
 }
 
 const AddTodoForm: FC<Props> = ({ addTodo, closeAddTodo }) => {
-  const [task, setTask] = useState("");
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
+  const [task, setTask] = useState("")
+  const [showAlert, setShowAlert] = useState(false)
+  const [alertMessage, setAlertMessage] = useState("")
 
   const handleSubmit = (e: any) => {
-    e.preventDefault();
+    e.preventDefault()
     if (!task) {
-      setAlertMessage("You need to add some text!");
-      setShowAlert(true);
-      return;
+      setAlertMessage("You need to add some text!")
+      setShowAlert(true)
+      return
     }
-    if (task.length > 20) {
-      setAlertMessage("Your todo is too long!");
-      setShowAlert(true);
-      return;
+    if (task.length > 32) {
+      setAlertMessage("Your todo is too long!")
+      setShowAlert(true)
+      return
     }
-    
-    addTodo(task);
-    setTask("");
-  };
+
+    addTodo(task)
+    setTask("")
+  }
 
   useEffect(() => {
     const timeOut = setTimeout(() => {
-      setShowAlert(false);
-    }, 3000);
+      setShowAlert(false)
+    }, 3000)
 
     return () => {
-      clearTimeout(timeOut);
-    };
-  }, [showAlert]);
+      clearTimeout(timeOut)
+    }
+  }, [showAlert])
 
   return (
     <div className="bg-gray-100 py-8 relative border-4 border-gray-100 rounded-lg dark:bg-slate-800 dark:border-slate-800">
@@ -54,6 +54,7 @@ const AddTodoForm: FC<Props> = ({ addTodo, closeAddTodo }) => {
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
+            aria-label="cross"
           >
             <path
               strokeLinecap="round"
@@ -73,7 +74,7 @@ const AddTodoForm: FC<Props> = ({ addTodo, closeAddTodo }) => {
             placeholder="todo task..."
             value={task}
             onChange={(e) => {
-              setTask(e.target.value);
+              setTask(e.target.value)
             }}
             className="py-2 pl-8 pr-8 rounded text-2xl dark:bg-slate-900"
             autoFocus
@@ -85,7 +86,7 @@ const AddTodoForm: FC<Props> = ({ addTodo, closeAddTodo }) => {
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AddTodoForm;
+export default AddTodoForm

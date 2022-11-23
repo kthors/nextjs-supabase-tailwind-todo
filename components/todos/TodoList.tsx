@@ -1,23 +1,23 @@
-import { FC, useEffect, useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
-import AddTodoForm from "./AddTodoForm";
-import Alert from "./Alert";
-import Todo from "./Todo";
-import { ITodo } from "../../types/index";
+import { FC, useEffect, useState } from "react"
+import { supabase } from "../../lib/supabaseClient"
+import AddTodoForm from "./AddTodoForm"
+import Alert from "./Alert"
+import Todo from "./Todo"
+import { ITodo } from "../../types/index"
 
 interface Props {
-  user: any;
+  user: any
 }
 
 const Todolist: FC<Props> = ({ user }) => {
-  const [todos, setTodos] = useState([]);
-  const [errorText, setError] = useState("");
-  const [isLocal, setIsLocal] = useState(false);
-  const [isAddTodoOpen, setIsAddTodoOpen] = useState(false);
+  const [todos, setTodos] = useState([])
+  const [errorText, setError] = useState("")
+  const [isLocal, setIsLocal] = useState(false)
+  const [isAddTodoOpen, setIsAddTodoOpen] = useState(false)
 
   useEffect(() => {
-    fetchTodos();
-  }, []);
+    fetchTodos()
+  }, [])
 
   const fetchTodos = async () => {
     try {
@@ -25,63 +25,63 @@ const Todolist: FC<Props> = ({ user }) => {
         .from("todos")
         .select("*")
         .eq("user_id", user.id)
-        .order("id", true);
-      if (error) throw new Error(errorText);
-      setTodos(todos);
+        .order("id", true)
+      if (error) throw new Error(errorText)
+      setTodos(todos)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   const editTodo = async (todoId: string | number, task: string) => {
     try {
-      let trimmedTask = task.trim();
+      let trimmedTask = task.trim()
       const { data, error } = await supabase
         .from("todos")
         .update({ task: trimmedTask })
         .eq("id", todoId)
-        .single();
+        .single()
 
       let newList = todos.map((storedTodo: ITodo) => {
-        if (storedTodo.id == todoId) return Object.assign({}, data);
-        return storedTodo;
-      });
+        if (storedTodo.id == todoId) return Object.assign({}, data)
+        return storedTodo
+      })
       if (error) {
-        throw new Error(error);
+        throw new Error(error)
       }
-      setTodos(newList);
+      setTodos(newList)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   const addTodo = async (task: string) => {
-    let trimmedTask = task.trim();
+    let trimmedTask = task.trim()
     if (trimmedTask.length) {
       let { data: todo, error } = await supabase
         .from("todos")
         .insert({ task: trimmedTask, user_id: user.id })
-        .single();
-      if (error) setError(error.message);
+        .single()
+      if (error) setError(error.message)
       else {
-        setTodos([...todos, todo]);
+        setTodos([...todos, todo])
       }
     }
-  };
+  }
 
   const deleteTodo = async (id: number) => {
     try {
-      await supabase.from("todos").delete().eq("id", id);
-      const filteredTodos = todos.filter((todo) => todo.id != id);
-      setTodos(filteredTodos);
+      await supabase.from("todos").delete().eq("id", id)
+      const filteredTodos = todos.filter((todo) => todo.id != id)
+      setTodos(filteredTodos)
     } catch (error) {
-      console.log("error", error);
+      console.log("error", error)
     }
-  };
+  }
 
   const closeAddTodo = () => {
-    setIsAddTodoOpen(false);
-  };
+    setIsAddTodoOpen(false)
+  }
 
   return (
     <div className="py-8">
@@ -89,7 +89,7 @@ const Todolist: FC<Props> = ({ user }) => {
         {!isAddTodoOpen ? (
           <button
             onClick={() => {
-              setIsAddTodoOpen(true);
+              setIsAddTodoOpen(true)
             }}
             className="cursor-pointer hover:translate-x-1 transition duration-150"
           >
@@ -118,8 +118,6 @@ const Todolist: FC<Props> = ({ user }) => {
         )}
       </div>
 
-      {/* {!!errorText && <Alert text={errorText} />} */}
-
       <div className="pt-14">
         <h3 className="text-xl font-bold ">todos - {todos.length}</h3>
         <ul className="py-4">
@@ -139,7 +137,7 @@ const Todolist: FC<Props> = ({ user }) => {
         </ul>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Todolist;
+export default Todolist

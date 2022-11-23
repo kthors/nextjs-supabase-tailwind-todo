@@ -1,10 +1,9 @@
-import React from "react";
-import Link from "next/link";
+import React from "react"
+import Link from "next/link"
 
 const CheckEmail = () => {
   return (
     <div className="mx-auto">
-      {/* {showAlert && <Alert message={alertMessage} isError={false} />} */}
       <div className="max-w-5xl mx-auto">
         <div className="pt-52 pb-10">
           <h1 className="text-3xl font-semibold">Forgot password.</h1>
@@ -51,7 +50,7 @@ const CheckEmail = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CheckEmail;
+export default CheckEmail

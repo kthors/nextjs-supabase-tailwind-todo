@@ -1,16 +1,16 @@
-import React, { FC, useEffect, useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
-import EditTodoForm from "./EditTodoForm";
+import React, { FC, useEffect, useState } from "react"
+import { supabase } from "../../lib/supabaseClient"
+import EditTodoForm from "./EditTodoForm"
 
 interface Props {
-  todo: any;
-  onDelete: () => void;
-  handleOnEdit: (id: any, task: string) => void;
+  todo: any
+  onDelete: () => void
+  handleOnEdit: (id: any, task: string) => void
 }
 
 const Todo: FC<Props> = ({ todo, onDelete, handleOnEdit }) => {
-  const [isEdit, setIsEdit] = useState(false);
-  const [isCompleted, setIsCompleted] = useState(todo.is_complete);
+  const [isEdit, setIsEdit] = useState(false)
+  const [isCompleted, setIsCompleted] = useState(todo.is_complete)
 
   const toggle = async () => {
     try {
@@ -18,33 +18,25 @@ const Todo: FC<Props> = ({ todo, onDelete, handleOnEdit }) => {
         .from("todos")
         .update({ is_complete: !isCompleted })
         .eq("id", todo.id)
-        .single();
-
-      // let newList = JSON.parse(localStorage.getItem("todos")).map(
-      //   (storedTodo) => {
-      //     if (storedTodo.id == todo.id) return Object.assign({}, data);
-      //     return storedTodo;
-      //   }
-      // );
-      // localStorage.setItem("todos", JSON.stringify(newList));
+        .single()
 
       if (error) {
-        throw new Error(error);
+        throw new Error(error)
       }
-      setIsCompleted(data.is_complete);
+      setIsCompleted(data.is_complete)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   const toggleEdit = () => {
-    setIsEdit(!isEdit);
-  };
+    setIsEdit(!isEdit)
+  }
 
   return (
     <li
       onClick={(e) => {
-        e.preventDefault();
+        e.preventDefault()
       }}
       className="w-full block cursor-pointer hover:bg-gray-200 focus:outline-none focus:bg-gray-200 transition duration-150 ease-in-out"
     >
@@ -70,7 +62,7 @@ const Todo: FC<Props> = ({ todo, onDelete, handleOnEdit }) => {
           <button
             className="w-8 h-8 ml-2 border-2 border-transparent hover:border-2 rounded transition duration-100 ease-out hover:scale-150"
             onClick={() => {
-              toggleEdit();
+              toggleEdit()
             }}
           >
             <svg
@@ -78,15 +70,16 @@ const Todo: FC<Props> = ({ todo, onDelete, handleOnEdit }) => {
               className="h-6 w-6"
               viewBox="0 0 20 20"
               fill="currentColor"
+              aria-label="pencil"
             >
               <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
             </svg>
           </button>
           <button
             onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              onDelete();
+              e.preventDefault()
+              e.stopPropagation()
+              onDelete()
             }}
             className="w-8 h-8 ml-2 border-2 border-transparent hover:border-2  rounded transition duration-100 ease-out hover:scale-150"
           >
@@ -97,6 +90,7 @@ const Todo: FC<Props> = ({ todo, onDelete, handleOnEdit }) => {
               viewBox="0 0 24 24"
               stroke="currentColor"
               strokeWidth={2}
+              aria-label="cross"
             >
               <path
                 strokeLinecap="round"
@@ -114,7 +108,7 @@ const Todo: FC<Props> = ({ todo, onDelete, handleOnEdit }) => {
         />
       )}
     </li>
-  );
-};
+  )
+}
 
-export default Todo;
+export default Todo
